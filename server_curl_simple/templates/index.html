@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask CRUD Operations</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Flask CRUD Operations</h1>
+
+    <h2>GET Item</h2>
+    <input type="text" id="getItemId" placeholder="Item ID">
+    <button onclick="getItem()">Get Item</button>
+    <div id="getResult"></div>
+
+    <h2>POST Item</h2>
+    <input type="text" id="postItemId" placeholder="Item ID">
+    <input type="text" id="postData" placeholder="Data">
+    <button onclick="postItem()">Create Item</button>
+    <div id="postResult"></div>
+
+    <h2>PUT Item</h2>
+    <input type="text" id="putItemId" placeholder="Item ID">
+    <input type="text" id="putData" placeholder="Data">
+    <button onclick="putItem()">Update Item</button>
+    <div id="putResult"></div>
+
+    <h2>DELETE Item</h2>
+    <input type="text" id="deleteItemId" placeholder="Item ID">
+    <button onclick="deleteItem()">Delete Item</button>
+    <div id="deleteResult"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getItem() {
+            const itemId = $('#getItemId').val();
+            $.ajax({
+                url: `/items/${itemId}`,
+                method: 'GET',
+                success: function(data) {
+                    $('#getResult').text(JSON.stringify(data));
+                },
+                error: function(err) {
+                    $('#getResult').text(JSON.stringify(err.responseJSON));
+                }
+            });
+        }
+
+        function postItem() {
+            const itemId = $('#postItemId').val();
+            const data = $('#postData').val();
+            $.ajax({
+                url: `/items`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ item_id: itemId, data: data }),
+                success: function(data) {
+                    $('#postResult').text(JSON.stringify(data));
+                },
+                error: function(err) {
+                    $('#postResult').text(JSON.stringify(err.responseJSON));
+                }
+            });
+        }
+
+        function putItem() {
+            const itemId = $('#putItemId').val();
+            const data = $('#putData').val();
+            $.ajax({
+                url: `/items/${itemId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ data: data }),
+                success: function(data) {
+                    $('#putResult').text(JSON.stringify(data));
+                },
+                error: function(err) {
+                    $('#putResult').text(JSON.stringify(err.responseJSON));
+                }
+            });
+        }
+
+        function deleteItem() {
+            const itemId = $('#deleteItemId').val();
+            $.ajax({
+                url: `/items/${itemId}`,
+                method: 'DELETE',
+                success: function(data) {
+                    $('#deleteResult').text(JSON.stringify(data));
+                },
+                error: function(err) {
+                    $('#deleteResult').text(JSON.stringify(err.responseJSON));
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
